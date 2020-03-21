@@ -31,30 +31,18 @@ def display_weather():
 
 
 
-@route('/new', method='GET')
-def new_item():
 
-    new = request.GET.task.strip()
-
-    conn = sqlite3.connect('todo.db')
-    c = conn.cursor()
-
-    c.execute("INSERT INTO todo (task,status) VALUES (?,?)", (new, 1))
-    new_id = c.lastrowid
-
-    conn.commit()
-    c.close()
-
-    return '<p>The new task was inserted into the database, the ID is %s</p>' % new_id
-
-@route('/todo')
+@route('/table')
 def todo_list():
     conn = sqlite3.connect('temps.db')
     c = conn.cursor()
-    c.execute("SELECT id, temp FROM todo WHERE status LIKE '1'")
+    c.execute("SELECT id, temp, humid FROM meas ORDER BY id DESC LIMIT 10")
     result = c.fetchall()
-    return str(result)
+    return template('make_table', rows = result)
 
+# SELECT * FROM (
+# SELECT * FROM employees ORDER BY employee_id DESC LIMIT 10)
+# ORDER BY employee_id ASC;
 
 
 if __name__ == '__main__':

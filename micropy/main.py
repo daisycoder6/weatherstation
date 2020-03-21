@@ -3,16 +3,6 @@ import time
 import urequests
 import config
 import dht
-import datetime
-
-
-def gen_tstamp():
-    """
-    Generates a current timestamp
-    """
-    i = datetime.datetime.now()
-    tstamp = i.strftime('%Y_%m_%d_%H_%M_%S')
-    return(tstamp)
 
 def connect_wifi():
     ap_if = network.WLAN(network.AP_IF)
