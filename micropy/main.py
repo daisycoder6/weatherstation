@@ -3,8 +3,25 @@ import time
 import urequests
 import config
 import dht
+import utime
+
+def gen_timestamp():
+    """
+    Get current time from RTC
+    """
+
+    year, month, mday, hour, minute, second, weekday, yearday = utime.localtime()
+    component = (str(year), str(month), str(mday), str(hour), str(minute), str(second))
+
+    timestamp = "_".join(component)
+
+    return timestamp
 
 def connect_wifi():
+    """
+    Connect to WIFI
+    Credential supplied fromconfig.py which is copied to device
+    """
     ap_if = network.WLAN(network.AP_IF)
     ap_if.active(False)
     sta_if = network.WLAN(network.STA_IF)
@@ -36,13 +53,15 @@ def deepsleep():
 
 
 def log_data(temperature, humidity):
+    """
+    Send data to web server
+    """
 
-    # http://localhost:8080/?&temp=5&humid=43.4
-
-    # WEBHOOK_URL = 'http://fac4a10c.ngrok.io?&field1={temperature}&field2={humidity}'
-    #WEBHOOK_URL = 'http://fac4a10c.ngrok.io/?field1={temperature}&field2={humidity}'
+    timestamp = gen_timestamp()
     print('Invoking log webhook')
-    url = config.WEBHOOK_URL.format(temperature=temperature,
+    url = config.WEBHOOK_URL.format(id = config.SENSOR_ID,
+                                    tstamp = timestamp,
+                                    temperature=temperature,
                                     humidity=humidity)
 
     print(url)
@@ -50,10 +69,10 @@ def log_data(temperature, humidity):
     # response = get(url, payload)
     print(response)
     if response.status_code < 400:
-        print('Webhook invoked')
+        print('Logging succeeded')
     else:
-        print('Webhook failed')
-        raise RuntimeError('Webhook failed')
+        print('Logging failed')
+        #raise RuntimeError('Webhook failed')
     response.close()
 
 

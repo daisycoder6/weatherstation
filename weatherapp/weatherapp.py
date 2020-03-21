@@ -4,19 +4,24 @@ import time
 import random
 import sqlite3
 
-
+dbasename = 'temps2.db'
 
 
 @route('/')
 def display_weather():
 
+
+
+    sensorid = request.query.sensorid
+    tstamp = request.query.timestamp
     airtemp = request.query.field1
     airhumid = request.query.field2
 
-    conn = sqlite3.connect('temps.db')
+    conn = sqlite3.connect(dbasename)
     c = conn.cursor()
 
-    c.execute("INSERT INTO meas (temp,humid) VALUES (?,?)", (airtemp, airhumid))
+    c.execute("INSERT INTO meas (sensor_id , tstamp, temp, humid) VALUES (?,?,?,?)", 
+                                (sensorid, tstamp, airtemp, airhumid))
     new_id = c.lastrowid
 
     conn.commit()
@@ -34,15 +39,13 @@ def display_weather():
 
 @route('/table')
 def todo_list():
-    conn = sqlite3.connect('temps.db')
+    conn = sqlite3.connect(dbasename)
     c = conn.cursor()
-    c.execute("SELECT id, temp, humid FROM meas ORDER BY id DESC LIMIT 10")
+    c.execute("SELECT id, sensor_id, tstamp, temp, humid FROM meas ORDER BY id DESC LIMIT 10")
     result = c.fetchall()
+
     return template('make_table', rows = result)
 
-# SELECT * FROM (
-# SELECT * FROM employees ORDER BY employee_id DESC LIMIT 10)
-# ORDER BY employee_id ASC;
 
 
 if __name__ == '__main__':
