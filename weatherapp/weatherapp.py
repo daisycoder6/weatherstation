@@ -1,10 +1,19 @@
 from bottle import Bottle, run, get, post,static_file
 from bottle import request, route, template, response
-import time
+import datetime
 import random
 import sqlite3
 
 dbasename = 'temps2.db'
+
+def gen_tstamp():
+    """
+    Generates a current timestamp
+    """
+    i = datetime.datetime.now()
+    tstamp = i.strftime('%Y_%m_%d_%H_%M_%S')
+
+    return tstamp
 
 
 @route('/')
@@ -13,7 +22,7 @@ def display_weather():
 
 
     sensorid = request.query.sensorid
-    tstamp = request.query.timestamp
+    tstamp = gen_tstamp()
     airtemp = request.query.field1
     airhumid = request.query.field2
 

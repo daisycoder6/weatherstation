@@ -34,21 +34,30 @@ def connect_wifi():
     print('Network config:', sta_if.ifconfig())
 
 def get_temperature_and_humidity():
+    """
+    Invoke measurement and readback of DHT22
+    """
+
     dht22 = dht.DHT22(machine.Pin(4))
     dht22.measure()
     temperature = dht22.temperature()
     humidity = dht22.humidity()
-    # if config.FAHRENHEIT:
-    #     temperature = temperature * 9 / 5 + 32
+
     return temperature, humidity
 
 
 def deepsleep():
+    """
+    Sends micro into deepsleep for specified time
+    """
+
+    sleeptime = config.SLEEP_TIME
+
     print('Going into deepsleep for {seconds} seconds...'.format(
-        seconds=10))
+        seconds=sleeptime))
     rtc = machine.RTC()
     rtc.irq(trigger=rtc.ALARM0, wake=machine.DEEPSLEEP)
-    rtc.alarm(rtc.ALARM0, 10 * 1000)
+    rtc.alarm(rtc.ALARM0, sleeptime * 1000)
     machine.deepsleep()
 
 
