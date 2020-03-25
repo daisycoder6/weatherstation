@@ -53,8 +53,21 @@ def todo_list():
     c.execute("SELECT id, sensor_id, tstamp, temp, humid FROM meas ORDER BY id DESC LIMIT 10")
     result = c.fetchall()
 
-    return template('make_table', rows = result)
+    output = template('topten2', rows=result)
 
+    return output
+
+    #return template('make_table', rows = result)
+
+
+@route('/static/<filename:path>')
+def fetch_static(filename):
+    """
+    Serves upthe static content. we require the path filter
+    as wehave subdirectories under static
+    """
+    #response.set_header('Cache-Control', 'max-age=600')
+    return static_file(filename, root='static')
 
 
 if __name__ == '__main__':
