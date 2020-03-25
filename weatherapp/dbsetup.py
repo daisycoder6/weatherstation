@@ -1,3 +1,12 @@
+"""
+Inital setupof database
+
+Usage: python dbsetup.py <databasename>
+
+Run from app directory
+"""
+
+
 import argparse
 import sqlite3
 

@@ -17,9 +17,11 @@ def gen_tstamp():
 
 
 @route('/')
-def display_weather():
-
-
+def gather_sensor_data():
+    """
+    Sensors send data here using Querystrings.
+    Gets stored in sqlite database
+    """
 
     sensorid = request.query.sensorid
     tstamp = gen_tstamp()
@@ -34,20 +36,18 @@ def display_weather():
     new_id = c.lastrowid
 
     conn.commit()
-    
-    #airtemp = str(random.random())
 
-    #return "Hello World" + airtemp
-    # return template('Temperaturedjfbv: {{airtemp}} Humidity {{airhumid}}', 
-    #                 airtemp=airtemp, airhumid=airhumid)
-
-    return '<p>The new task was inserted into the database, the ID is %s</p>' % airtemp
+    return 
 
 
 
 
 @route('/table')
-def todo_list():
+def display_data():
+    """
+    Displays last ten results in a table
+    """
+
     conn = sqlite3.connect(dbasename)
     c = conn.cursor()
     c.execute("SELECT id, sensor_id, tstamp, temp, humid FROM meas ORDER BY id DESC LIMIT 10")
@@ -57,7 +57,6 @@ def todo_list():
 
     return output
 
-    #return template('make_table', rows = result)
 
 
 @route('/static/<filename:path>')
@@ -72,4 +71,4 @@ def fetch_static(filename):
 
 if __name__ == '__main__':
 
-    run(host='localhost', port=8080,debug=True,reload=True)
+    run(host='localhost', port=8080,debug=False,reload=False)

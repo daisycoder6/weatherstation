@@ -73,14 +73,13 @@ def log_data(temperature, humidity):
                                     temperature=temperature,
                                     humidity=humidity)
 
-    print(url)
     response = urequests.get(url=url)
-    # response = get(url, payload)
     print(response)
     if response.status_code < 400:
         print('Logging succeeded')
     else:
         print('Logging failed')
+        #Want sensor to keep running if it can't connect
         #raise RuntimeError('Webhook failed')
     response.close()
 
