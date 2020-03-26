@@ -1,5 +1,5 @@
 from bottle import Bottle, run, get, post,static_file
-from bottle import request, route, template, response
+from bottle import request, route, template, response, default_app
 import datetime
 import random
 import sqlite3
@@ -69,6 +69,8 @@ def fetch_static(filename):
     return static_file(filename, root='static')
 
 
+application = default_app()
+
 if __name__ == '__main__':
 
-    run(host='localhost', port=8080,debug=False,reload=False)
+    run(app=application, host='localhost', port=8080,debug=False,reload=False)
