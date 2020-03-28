@@ -4,7 +4,7 @@ import datetime
 import random
 import sqlite3
 
-dbasename = 'liveresults.db'
+dbasename = '/home/daisycoder6/weatherstation/weatherapp/liveresults.db'
 
 def gen_tstamp():
     """
