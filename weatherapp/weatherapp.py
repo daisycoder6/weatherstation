@@ -4,7 +4,7 @@ import datetime
 import random
 import sqlite3
 
-dbasename = 'temps2.db'
+dbasename = 'liveresults.db'
 
 def gen_tstamp():
     """
